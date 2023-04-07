@@ -39,7 +39,6 @@ def handle_new_question_request(update: Update, context: CallbackContext, conn, 
 
     user_id = update.message.from_user.id
     user_msg = update.message.text
-    print(user_id, ' = ', user_msg)
 
     random_question_number = random.choice(list(json_quiz.keys()))
     random_question = json_quiz[random_question_number]['question']
@@ -121,6 +120,7 @@ def main():
     redis_host = os.environ['REDIS_USER_HOST']
     redis_port = os.environ['REDIS_USER_PORT']
     redis_password = os.environ['REDIS_USER_PASSWORD']
+
     with open('questions_and_answers.json', 'r') as quiz_file:
         json_quiz = json.load(quiz_file)
 
