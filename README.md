@@ -2,16 +2,17 @@
 
 ## Описание
 
-Боту общается по заранее подготовленным фразам, который храним в своём аккаунте [Dialogflow](https://dialogflow.cloud.google.com/)
+Боту даётся словарь с вопросами и ответами.
+Он проводит викторину.
 
-**VK**  - [VK Group](https://vk.com/im?media=&sel=-194790108)
+VK:
 
-![vk_gif](https://user-images.githubusercontent.com/58893102/222070436-49f7884e-103a-4a0b-b5e5-e9c2a1b997dd.gif)
+![vk_bot_video](https://user-images.githubusercontent.com/58893102/230610119-0713c56e-8331-4653-8bed-b08a5f5b9e52.gif)
 
 
-**Telegram** - [TG Bot](https://t.me/verb_game_bot)
+TG:
 
-![tg_gif](https://user-images.githubusercontent.com/58893102/222070418-aae63936-bbc3-42fa-ba86-584a3de23b0f.gif)
+![tg_bot_video](https://user-images.githubusercontent.com/58893102/230610121-21c53690-7648-4cd6-9cf4-8f01fd886568.gif)
 
 
 ## Установка
@@ -40,7 +41,7 @@
 ## Запуск
 
 - запустить VK-бота командой:
-        ```python create_intent.py```
+        ```python vk_bot.py```
 
 - запустить TG-бота командой:
-       ```python create_intent.py```
+       ```python tg_bot.py```
