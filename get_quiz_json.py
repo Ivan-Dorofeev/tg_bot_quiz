@@ -1,3 +1,4 @@
+import argparse
 import json
 import os
 from pprint import pprint
@@ -6,12 +7,16 @@ from pprint import pprint
 def main():
     questions_and_answers = {}
 
+    parser = argparse.ArgumentParser(description='Указываем папку, откуда брать файлы для словаря викторины')
+    parser.add_argument('-p', '--path_to_dir', default='questions')
+    args = parser.parse_args()
+
     counter = 0
-    for dir, path, files in os.walk('questions'):
+    for dir, path, files in os.walk(args.path_to_dir):
         for file in files:
             file_path = os.path.join(dir, file)
-            with open(file_path, 'r', encoding='KOI8-R') as ff:
-                read_file = ff.readlines()
+            with open(file_path, 'r', encoding='KOI8-R') as file_for_read:
+                read_file = file_for_read.readlines()
                 question = ''
                 answer = ''
                 question_flag = False
@@ -28,8 +33,6 @@ def main():
                         answer_flag = False
                         if question and answer:
                             counter += 1
-                            print('ВОПРОС: ', question)
-                            print('ОТВЕТ: ', answer)
                             questions_and_answers[counter] = {'question': question, 'answer': answer}
                             question = ''
                             answer = ''

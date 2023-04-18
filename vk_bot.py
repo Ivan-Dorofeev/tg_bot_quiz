@@ -108,6 +108,8 @@ def cancel_quiz(event, vk_api, conn, json_quiz):
 
 
 def main():
+    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+
     load_dotenv()
     vk_group_token = os.environ['VK_API_GROUP_TOKEN']
     redis_host = os.environ['REDIS_USER_HOST']
