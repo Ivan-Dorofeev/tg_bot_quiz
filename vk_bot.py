@@ -59,21 +59,20 @@ def check_answer(event, vk_api, conn, json_quiz):
         )
 
 
-def new_question_request(event, vk_api, conn, json_quiz):
+def new_question_request(event, vk_api, conn, quiz_library):
     """Задаём рандомный вопрос"""
 
     user_id = event.user_id
 
-    random_question_number = random.choice(list(json_quiz.keys()))
-    random_question = json_quiz[random_question_number]['question']
+    question_number, question_and_answer = quiz_library[random.choice(list(quiz_library.items()))]
 
     # Записываем пользователя и вопрос в базу
-    conn.set(user_id, random_question_number)
+    conn.set(user_id, question_number)
 
     keyboard = add_keyboard()
     vk_api.messages.send(
         user_id=user_id,
-        message=random_question,
+        message=question_and_answer['question'],
         random_id=random.randint(1, 1000),
         keyboard=keyboard.get_keyboard()
     )

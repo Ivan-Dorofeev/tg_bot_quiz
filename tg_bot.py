@@ -9,13 +9,12 @@ from dotenv import load_dotenv
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, ConversationHandler
 
-
 logger = logging.getLogger('tg_bot_logger')
 
 WAIT_START_QUIZ, WAIT_ANSWER = range(2)
 
-custom_keyboard = [['Новый вопрос', 'Сдаться', 'Мой счёт']]
-reply_markup = telegram.ReplyKeyboardMarkup(custom_keyboard)
+CUSTOM_KEYBOARD = [['Новый вопрос', 'Сдаться', 'Мой счёт']]
+reply_markup = telegram.ReplyKeyboardMarkup(CUSTOM_KEYBOARD)
 
 
 def start(update: Update, context: CallbackContext) -> None:
@@ -37,12 +36,11 @@ def handle_new_question_request(update: Update, context: CallbackContext, conn, 
 
     user_id = update.message.from_user.id
 
-    _, questions_answers = random.choice(list(quiz_library.items))
-    random_question = questions_answers['question']
+    question_number, question_and_answer = quiz_library[random.choice(list(quiz_library.items()))]
 
     # Записываем пользователя и вопрос в базу
-    conn.set(user_id, questions_answers)
-    update.message.reply_text(random_question, reply_markup=reply_markup)
+    conn.set(user_id, question_number)
+    update.message.reply_text(question_and_answer['question'], reply_markup=reply_markup)
 
     return WAIT_ANSWER
 
