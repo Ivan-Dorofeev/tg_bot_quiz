@@ -116,7 +116,7 @@ def main():
     redis_password = os.environ['REDIS_USER_PASSWORD']
 
     with open('questions_and_answers.json', 'r') as quiz_file:
-        json_quiz = json.load(quiz_file)
+        quiz_library = json.load(quiz_file)
 
     conn = redis.Redis(host=redis_host, port=redis_port, password=redis_password, decode_responses=True)
 
@@ -128,11 +128,11 @@ def main():
             for event in longpoll.listen():
                 if event.type == VkEventType.MESSAGE_NEW and event.to_me:
                     if event.text == "Сдаться":
-                        cancel_quiz(event, vk_api, conn, json_quiz)
+                        cancel_quiz(event, vk_api, conn, quiz_library)
                     if event.text == "Новый вопрос":
-                        new_question_request(event, vk_api, conn, json_quiz)
+                        new_question_request(event, vk_api, conn, quiz_library)
                     else:
-                        check_answer(event, vk_api, conn, json_quiz)
+                        check_answer(event, vk_api, conn, quiz_library)
         except ConnectionError:
             logger.warning('Ошибка соединения')
             time.sleep(60)

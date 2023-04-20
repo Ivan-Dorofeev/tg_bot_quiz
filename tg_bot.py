@@ -14,13 +14,13 @@ logger = logging.getLogger('tg_bot_logger')
 WAIT_START_QUIZ, WAIT_ANSWER = range(2)
 
 CUSTOM_KEYBOARD = [['Новый вопрос', 'Сдаться', 'Мой счёт']]
-reply_markup = telegram.ReplyKeyboardMarkup(CUSTOM_KEYBOARD)
+REPLY_MARKUP = telegram.ReplyKeyboardMarkup(CUSTOM_KEYBOARD)
 
 
 def start(update: Update, context: CallbackContext) -> None:
     user = update.effective_user
     update.message.reply_markdown_v2(fr'Привет, {user.mention_markdown_v2()}\!',
-                                     reply_markup=reply_markup)
+                                     reply_markup=REPLY_MARKUP)
     return WAIT_START_QUIZ
 
 
@@ -40,7 +40,7 @@ def handle_new_question_request(update: Update, context: CallbackContext, conn, 
 
     # Записываем пользователя и вопрос в базу
     conn.set(user_id, question_number)
-    update.message.reply_text(question_and_answer['question'], reply_markup=reply_markup)
+    update.message.reply_text(question_and_answer['question'], reply_markup=REPLY_MARKUP)
 
     return WAIT_ANSWER
 
@@ -57,12 +57,12 @@ def handle_solution_attempt(update: Update, context: CallbackContext, conn, quiz
         user_msg_first_text = user_msg.split('.')[0]
         if user_msg_first_text in answer:
             update.message.reply_text('Правильно! Поздравляю! Для следующего вопроса нажми «Новый вопрос»',
-                                      reply_markup=reply_markup)
+                                      reply_markup=REPLY_MARKUP)
         else:
-            update.message.reply_text(f'Увы, Не верно.', reply_markup=reply_markup)
+            update.message.reply_text(f'Увы, Не верно.', reply_markup=REPLY_MARKUP)
             return WAIT_ANSWER
     else:
-        update.message.reply_text('Нажми «Новый вопрос»', reply_markup=reply_markup)
+        update.message.reply_text('Нажми «Новый вопрос»', reply_markup=REPLY_MARKUP)
         return WAIT_START_QUIZ
 
 
@@ -72,7 +72,7 @@ def cancel_quiz(update: Update, context: CallbackContext, conn, quiz_library):
     number_question_of_user = conn.get(user_id)
     if number_question_of_user:
         answer = quiz_library[number_question_of_user]['answer']
-        update.message.reply_text(f'Правильный ответ:\n{answer}', reply_markup=reply_markup)
+        update.message.reply_text(f'Правильный ответ:\n{answer}', reply_markup=REPLY_MARKUP)
         conn.delete(user_id)  # Удаляем пользователя и вопрос из базы
 
         handle_new_question_request(update=update, context=context, conn=conn, quiz_library=quiz_library)
